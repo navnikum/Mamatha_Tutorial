@@ -1,0 +1,102 @@
+{
+  "root": "setPendingFormStatus",
+  "description": "Loads fodCustomers record data",
+  "variables": {
+    "fetchedFields": {
+      "type": "any[]",
+      "input": "fromCaller"
+    },
+    "fodCustomersId": {
+      "type": "string",
+      "input": "fromCaller"
+    }
+  },
+  "actions": {
+    "setPendingFormStatus": {
+      "module": "vb/action/builtin/assignVariablesAction",
+      "parameters": {
+        "$page.variables.fodCustomersDetailFormLoadingStatus": {
+          "source": "pending"
+        }
+      },
+      "outcomes": {
+        "success": "resetFodCustomersData"
+      },
+      "description": "Updates status of the form to Pending.",
+      "label": "Set Form status to Pending"
+    },
+    "resetFodCustomersData": {
+      "module": "vb/action/builtin/resetVariablesAction",
+      "parameters": {
+        "variables": [
+          "$page.variables.fodCustomers"
+        ]
+      },
+      "outcomes": {
+        "success": "testValidInput"
+      },
+      "description": "Clears fodCustomers data the variable holds",
+      "label": "Reset fodCustomers variable"
+    },
+    "testValidInput": {
+      "module": "vb/action/builtin/ifAction",
+      "parameters": {
+        "condition": "[[ $variables.fetchedFields && $variables.fetchedFields.length && $variables.fodCustomersId !== undefined ]]"
+      },
+      "outcomes": {
+        "true": "loadFodCustomers"
+      },
+      "description": "Tests the REST call can be initiated",
+      "label": "Test valid input"
+    },
+    "loadFodCustomers": {
+      "module": "vb/action/builtin/restAction",
+      "parameters": {
+        "endpoint": "fodCustomers/get_fodCustomers",
+        "responseFields": "[[ $variables.fetchedFields ]]",
+        "uriParams": {
+          "fodCustomers_Id": "[[ $variables.fodCustomersId ]]"
+        }
+      },
+      "outcomes": {
+        "success": "assignFodCustomersData",
+        "failure": "fireErrorNotification"
+      },
+      "description": "Initiates REST call loading fodCustomers data",
+      "label": "Load fodCustomers record"
+    },
+    "assignFodCustomersData": {
+      "module": "vb/action/builtin/assignVariablesAction",
+      "parameters": {
+        "$page.variables.fodCustomers": {
+          "source": "{{ $chain.results.loadFodCustomers.body }}",
+          "auto": "always"
+        }
+      },
+      "outcomes": {
+        "success": "setReadyFormStatus"
+      },
+      "description": "Assigns data loaded by the REST call to the fodCustomers variable",
+      "label": "Assign fodCustomers data"
+    },
+    "setReadyFormStatus": {
+      "module": "vb/action/builtin/assignVariablesAction",
+      "parameters": {
+        "$page.variables.fodCustomersDetailFormLoadingStatus": {
+          "source": "ready"
+        }
+      }
+    },
+    "fireErrorNotification": {
+      "module": "vb/action/builtin/fireNotificationEventAction",
+      "parameters": {
+        "summary": "Could not load data",
+        "message": "[[ 'Could not load data: status ' + $chain.results.loadFodCustomers.payload.status ]]",
+        "type": "error",
+        "displayMode": "persist"
+      },
+      "description": "Shows an error message informing about data load failure",
+      "label": "Show error message"
+    }
+  }
+}

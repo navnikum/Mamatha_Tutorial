@@ -1,0 +1,35 @@
+<div class="oj-flex">
+  <div class="oj-flex-item oj-sm-12 oj-md-12">
+    <oj-sp-item-overview-page id="item_overview_page" display-options.go-to-parent="[[! $page.variables.inFlowBack]]"
+      display-options.in-flow-back="[[$page.variables.inFlowBack]]"
+      display-options.bidirectional-navigation="[[$page.variables.bidirectionalNavigation]]"
+      overview-expanded="[[$page.variables.overviewExpanded]]" display-mode="[[$page.variables.displayMode]]"
+      next-item="[[$page.variables.itemIndex >= 0 ? $page.variables.nextItem : undefined]]"
+      previous-item="[[$page.variables.itemIndex > 0 ? $page.variables.previousItem : undefined]]"
+      on-sp-go-to-parent="[[$listeners.ojSpGoToParent]]" on-sp-next="[[$listeners.ojSpItemOverviewPageSpNext]]"
+      on-sp-previous="[[$listeners.ojSpItemOverviewPageSpPrevious]]"
+      on-sp-overview-collapse="[[$listeners.ojSpItemOverviewSpCollapse]]" translations.go-to-parent="Manage Orders">
+      <oj-sp-item-overview id="item_overview" slot="overview"
+        expanded-state="[[ $page.variables.overviewExpanded ? 'expanded' : 'auto' ]]"
+        on-sp-expand="[[$listeners.ojSpItemOverviewSpExpand]]"
+        item-title="[[ ($variables.fodCustomers.FirstName || '') + ' ' + ($variables.fodCustomers.LastName || '') ]]"
+        avatar.initials="[[ $page.functions.getInitials($variables.fodCustomers.FirstName, $variables.fodCustomers.LastName) ]]">
+        <div slot="body">
+          <oj-bind-if test="[[ ($variables.itemId) !== undefined ]]">
+            <oj-dynamic-form id="item_overview_detail" readonly="true"
+              metadata="[[ $page.metadata.fodCustomersGetFodCustomersMetadata.provider ]]" layout="viewCustomerLayout"
+              value="{{ $variables.fodCustomers }}" value-loading="[[ $variables.fodCustomersDetailFormLoadingStatus ]]"
+              rendered-fields="{{ $variables.fodCustomersDetailFormRenderedFields }}"></oj-dynamic-form>
+          </oj-bind-if>
+        </div>
+      </oj-sp-item-overview>
+      <oj-list-view slot="main" data="[[ $variables.orderListSDP ]]">
+        <template slot="itemTemplate">
+          <oj-sp-list-item-template badge.text="[[ $current.data.OrderStatus ]]" badge.position="leading"
+            badge.status='[[ $current.data.OrderStatus === "PROCESSING" ? "info" : "default" ]]'
+            columns='[[ [{"primaryText":$current.data.OrderNumber,"overlineText":"Order","secondaryText":$application.functions.formatDate($current.data.OrderDate)},{"primaryText":$application.functions.formatCurrency($current.data.CurrencyCode, $current.data.TotalAmount),"overlineText":"Total Amount"}] ]]'></oj-sp-list-item-template>
+        </template>
+      </oj-list-view>
+    </oj-sp-item-overview-page>
+  </div>
+</div>

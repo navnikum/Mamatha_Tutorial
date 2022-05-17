@@ -1,0 +1,14 @@
+{
+  "description": "",
+  "root": "callComponentHelloDialogClose",
+  "actions": {
+    "callComponentHelloDialogClose": {
+      "module": "vb/action/builtin/callComponentMethodAction",
+      "parameters": {
+        "component": "{{ document.getElementById('hello-dialog') }}",
+        "method": "close"
+      }
+    }
+  },
+  "variables": {}
+}

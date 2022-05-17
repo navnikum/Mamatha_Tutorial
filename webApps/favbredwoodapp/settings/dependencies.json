@@ -1,0 +1,24 @@
+{
+    "component-dependencies": {
+        "oj-sp": {
+            "version": "2110.0.0-rc.1.0",
+            "components": {
+                "simple-create-edit": "2110.0.0-rc.1.0",
+                "smart-filter-search": "2110.0.0-rc.1.0",
+                "collection-container": "2110.0.0-rc.1.0",
+                "list-item-template": "2110.0.0-rc.1.0",
+                "empty-state": "2110.0.0-rc.1.0",
+                "item-overview-page": "2110.0.0-rc.1.0",
+                "item-overview": "2110.0.0-rc.1.0",
+                "select-single-item-template": "2110.0.0-rc.1.0",
+                "attachments-simple": "2110.0.0-rc.1.0"
+            }
+        },
+        "oj-dynamic": {
+            "version": "10.1.0-rc.8",
+            "components": {
+                "form": "10.1.0-rc.8"
+            }
+        }
+    }
+   }

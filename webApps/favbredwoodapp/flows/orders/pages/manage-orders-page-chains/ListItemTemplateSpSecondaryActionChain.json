@@ -1,0 +1,75 @@
+{
+  "description": "",
+  "root": "assignVariablesCurrentOrderId",
+  "actions": {
+    "assignVariablesCurrentOrderId": {
+      "module": "vb/action/builtin/assignVariablesAction",
+      "parameters": {
+        "$page.variables.currentOrderId": {
+          "source": "{{ $variables.current.data.OrderId }}"
+        },
+        "$page.variables.currentOrderNumber": {
+          "source": "{{ $variables.current.data.OrderNumber }}"
+        }
+      },
+      "outcomes": {
+        "success": "switchActionId"
+      }
+    },
+    "callConfirmDeleteDialogOpen": {
+      "module": "vb/action/builtin/callComponentMethodAction",
+      "parameters": {
+        "component": "{{ document.getElementById('order-delete-conf-dialog') }}",
+        "method": "open"
+      },
+      "outcomes": {}
+    },
+    "switchActionId": {
+      "module": "vb/action/builtin/switchAction",
+      "parameters": {
+        "caseValue": "[[ $variables.actionId ]]",
+        "possibleValues": [
+          "delete-order",
+          "view-customer"
+        ]
+      },
+      "outcomes": {
+        "delete-order": "callConfirmDeleteDialogOpen",
+        "view-customer": "navigateToViewCustomer"
+      }
+    },
+    "navigateToViewCustomer": {
+      "module": "vb/action/builtin/navigateAction",
+      "parameters": {
+        "page": "view-customer",
+        "history": "push",
+        "params": {
+          "itemId": "{{ $variables.current.data.CustomerId }}",
+          "parentPage": "manage-orders"
+        }
+      }
+    }
+  },
+  "variables": {
+    "actionId": {
+      "required": true,
+      "type": "string",
+      "input": "fromCaller"
+    },
+    "key": {
+      "required": true,
+      "type": "any",
+      "input": "fromCaller"
+    },
+    "index": {
+      "required": true,
+      "type": "number",
+      "input": "fromCaller"
+    },
+    "current": {
+      "required": true,
+      "type": "any",
+      "input": "fromCaller"
+    }
+  }
+}

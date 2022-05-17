@@ -1,0 +1,59 @@
+{
+  "description": "",
+  "root": "callConfirmDeleteDialogClose",
+  "actions": {
+    "callConfirmDeleteDialogClose": {
+      "module": "vb/action/builtin/callComponentMethodAction",
+      "parameters": {
+        "component": "{{ document.getElementById('order-delete-conf-dialog') }}",
+        "method": "close"
+      },
+      "outcomes": {
+        "success": "callDeleteOrder"
+      }
+    },
+    "callDeleteOrder": {
+      "module": "vb/action/builtin/restAction",
+      "parameters": {
+        "endpoint": "fodOrders/delete_fodOrders",
+        "uriParams": {
+          "fodOrders_Id": "{{ $page.variables.currentOrderId }}"
+        }
+      },
+      "outcomes": {
+        "failure": "fireDeleteErrorNotification",
+        "success": "refreshDataProvider"
+      }
+    },
+    "refreshDataProvider": {
+      "module": "vb/action/builtin/fireDataProviderEventAction",
+      "parameters": {
+        "refresh": null,
+        "target": "[[ $page.variables.searchResultsDP ]]"
+      },
+      "outcomes": {
+        "success": "fireNotification3"
+      }
+    },
+    "fireNotification3": {
+      "module": "vb/action/builtin/fireNotificationEventAction",
+      "parameters": {
+        "target": "leaf",
+        "displayMode": "transient",
+        "type": "confirmation",
+        "summary": "[[ $application.translations.appBundle.CONFIRM_ORDER_DELETE_SUCCESS_MSG ]]",
+        "message": "[[ $application.translations.appBundle.ORDER_NUMBER_PREFIX + ' '+ $page.variables.currentOrderNumber ]]"
+      }
+    },
+    "fireDeleteErrorNotification": {
+      "module": "vb/action/builtin/fireNotificationEventAction",
+      "parameters": {
+        "target": "leaf",
+        "summary": "[[ $chain.results.callDeleteOrder.message.summary ]]",
+        "type": "error",
+        "displayMode": "persist"
+      }
+    }
+  },
+  "variables": {}
+}

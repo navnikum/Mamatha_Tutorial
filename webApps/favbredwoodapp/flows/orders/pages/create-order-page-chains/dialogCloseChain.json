@@ -1,0 +1,36 @@
+{
+  "description": "",
+  "variables": {
+    "detail": {
+      "required": true,
+      "type": "any",
+      "input": "fromCaller"
+    }
+  },
+  "root": "checkIfEscapeKey",
+  "actions": {
+    "checkIfEscapeKey": {
+      "module": "vb/action/builtin/ifAction",
+      "parameters": {
+        "condition": "[[ $chain.variables.detail && $chain.variables.detail.hasOwnProperty('originalEvent') && $chain.variables.detail.originalEvent.key === 'Escape' ]]"
+      },
+      "outcomes": {
+        "true": "callDialogResponseChain"
+      },
+      "description": "check If use press Esc",
+      "label": "check If use press Esc"
+    },
+    "callDialogResponseChain": {
+      "module": "vb/action/builtin/callChainAction",
+      "parameters": {
+        "id": "dialogResponseChain",
+        "params": {
+          "detail": "[[ $chain.variables.detail ]]",
+          "response": "NO"
+        }
+      },
+      "description": "call dialogResponseChain with parameter NO",
+      "label": "call dialogResponseChain with parameter NO"
+    }
+  }
+}

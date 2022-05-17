@@ -1,0 +1,87 @@
+<div class="oj-flex">
+  <div class="oj-flex-item oj-sm-12 oj-md-12">
+    <oj-sp-simple-create-edit id="oj_ssce1" page-title="Create Order" avatar="{{$page.variables.avatar}}"
+      primary-action.disabled="{{!($page.variables.primaryAlwaysOn || ($page.variables.dirtyDataFlag ? true : $page.variables.isSaved))}}"
+      display-options.save="{{$page.variables.saveOption!=='off'?$page.variables.dirtyDataFlag?'on':'disabled':'off'}}"
+      display-options.go-to-parent="false" contextual-info-sticky="true" display-options.contextual-info-label="true"
+      display-mode="[[$page.variables.displayMode]]" on-sp-cancel="[[$listeners.ojSpCancel]]"
+      on-sp-save="[[$listeners.ojSpSave]]" on-sp-go-to-parent="[[$listeners.ojSpGoToParent]]"
+      on-sp-primary-action="[[$listeners.ojSpSubmit]]"
+      contextual-info='[[ [{"label":"Customer Name","value":$variables.selectedCustomer.data ? $variables.selectedCustomer.data.CustomerName : undefined},{"label":"Date","value":$application.functions.formatDate((new Date()).getTime())},{"label":"Total Amount","value":$application.functions.formatCurrency(&apos;USD&apos;, $flow.variables.totalAmount)}] ]]' >
+    <div slot="main">
+      <oj-validation-group id="fod-order-validation-group" valid="{{ $variables.formState }}">
+        <div class="oj-sm-padding-1x-top">
+          <h2 class="oj-typography-subheading-xs">Customer Information
+            <oj-form-layout max-columns="3" direction="row">
+              <oj-select-single label-hint="[[ $application.translations.appBundle.select_single_label_hint_d558 ]]"
+                required="true" data="[[$page.variables.fodCustomersListSDP]]" item-text="CustomerName"
+                value-item="{{ $variables.selectedCustomer }}">
+                <template slot="itemTemplate">
+                  <oj-sp-select-single-item-template primary-text="[[ $current.data.CustomerName ]]"
+                    meta-text="[[ String($current.data.CustomerId) ]]"></oj-sp-select-single-item-template>
+                </template>
+              </oj-select-single>
+              <oj-input-text label-hint="[[ $application.translations.appBundle.input_text_label_hint_c863 ]]"
+                readonly="true"
+                value="[[$page.variables.selectedCustomer.data ? $page.variables.selectedCustomer.data.CustomerNumber : '']]"></oj-input-text>
+              <oj-input-text label-hint="[[ $application.translations.appBundle.input_text_label_hint_bc43 ]]"
+                readonly="true"
+                value="[[$page.variables.selectedCustomer.data ? $page.variables.selectedCustomer.data.EmailAddress : '']]"></oj-input-text>
+            </oj-form-layout>
+          </h2>
+        </div>
+        <oj-bind-if test="[[ $variables.selectedCustomer.data ]] ">
+          <div class="oj-sm-padding-4x-top">
+            <h2 class="oj-typography-subheading-xs">Shipping Address</h2>
+            <oj-form-layout max-columns="2" direction="row">
+              <oj-input-text label-hint="Address Line 1" readonly="true"
+                value="[[$page.variables.selectedCustomer.data ? $page.variables.selectedCustomer.data.ShippingAddressLine1 : '']]"></oj-input-text>
+              <oj-input-text label-hint="[[ $application.translations.appBundle.input_text_label_hint_97aa ]]"
+                readonly="true"
+                value="[[$page.variables.selectedCustomer.data ? $page.variables.selectedCustomer.data.ShippingAddressLine2 : '']]"></oj-input-text>
+              <oj-input-text label-hint="City" readonly="true"
+                value="[[$page.variables.selectedCustomer.data ? $page.variables.selectedCustomer.data.ShippingAddressCity : '']]"></oj-input-text>
+              <oj-input-text label-hint="State" readonly="true"
+                value="[[$page.variables.selectedCustomer.data ? $page.variables.selectedCustomer.data.ShippingAddressState : '']]"></oj-input-text>
+              <oj-input-text label-hint="Zip Code" readonly="true"
+                value="[[$page.variables.selectedCustomer.data ? $page.variables.selectedCustomer.data.ShippingPostalCode : '']]"></oj-input-text>
+              <oj-input-text label-hint="Country " readonly="true"
+                value="[[$page.variables.selectedCustomer.data ? $page.variables.selectedCustomer.data.ShippingAddressCountry : '']]"></oj-input-text>
+            </oj-form-layout>
+          </div>
+        </oj-bind-if>
+      </oj-validation-group>
+      <div class="oj-sm-padding-4x-top">
+        <h3 class="oj-typography-subheading-xs">Attachments
+          <oj-sp-attachments-simple create-mode="BACKGROUND_DEFERRED"
+            create-payload="{{ $variables.orderPayload.AttachmentsVO }}"
+            background-tracker.endpoint="attachments/postAttachDocTracker"
+            background-upload.endpoint="attachments/postAttachUpload"></oj-sp-attachments-simple>
+        </h3>
+      </div>
+      <div class="oj-sm-padding-4x-top">
+        <h2 class="oj-typography-subheading-xs"><oj-bind-text value="[[ $application.translations.appBundle.h2__text_dc6c ]]"></oj-bind-text></h2>
+        <oj-text-area placeholder="[[ $application.translations.appBundle.text_area_placeholder_8c4e ]]" rows="3"
+          max-rows="3" value="{{ $variables.orderPayload.Comments }}"></oj-text-area>
+      </div>
+    </div>
+    </oj-sp-simple-create-edit>
+    <oj-dialog style="display:none" id="dirtyDataWarningDialog" role="alertdialog"
+      dialog-title="[[$application.translations.format('app','spSceWarningTitle')]]" cancel-behavior="escape"
+      on-oj-close="[[$listeners.dirtyDataWarningDialogOjClose]]">
+    <div slot="body">
+      <span role="img" class="oj-ux-ico-warning"
+        :aria-label="[[$application.translations.format('app','spSceWarningTitle')]]"></span>
+      <oj-bind-text value="[[$application.translations.format('app','spSceUnsavedDataMessage')]]"></oj-bind-text>
+    </div>
+    <div slot="footer">
+      <oj-button id="confirmNo" on-oj-action="[[$listeners.confirmNoOjAction]]">
+        <oj-bind-text value="[[$application.translations.format('app','spSceWarningNo')]]"></oj-bind-text>
+      </oj-button>
+      <oj-button id="confirmYes" on-oj-action="[[$listeners.confirmYesOjAction]]" chroming="callToAction" >
+        <oj-bind-text value="[[$application.translations.format('app','spSceWarningYes')]]"></oj-bind-text>
+      </oj-button>
+    </div>
+    </oj-dialog>
+  </div>
+</div>

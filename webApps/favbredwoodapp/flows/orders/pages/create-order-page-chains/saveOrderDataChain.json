@@ -1,0 +1,68 @@
+{
+  "root": "assignVariablesOrderPayload",
+  "description": "",
+  "variables": {
+    "orderStatus": {
+      "type": "string",
+      "required": true,
+      "input": "fromCaller"
+    }
+  },
+  "actions": {
+    "assignVariablesOrderPayload": {
+      "module": "vb/action/builtin/assignVariablesAction",
+      "parameters": {
+        "$page.variables.orderPayload": {
+          "source": {
+            "OrderStatus": "{{ $variables.orderStatus }}"
+          },
+          "reset": "none",
+          "auto": "always"
+        }
+      },
+      "outcomes": {
+        "success": "callPostOrder"
+      }
+    },
+    "fireNotification": {
+      "module": "vb/action/builtin/fireNotificationEventAction",
+      "parameters": {
+        "target": "leaf",
+        "summary": "[[ $chain.results.callPostOrder.message.summary ]]",
+        "type": "error",
+        "displayMode": "persist"
+      }
+    },
+    "callPostOrder": {
+      "module": "vb/action/builtin/restAction",
+      "parameters": {
+        "endpoint": "fodOrders/create_fodOrders",
+        "body": "{{ $page.variables.orderPayload }}"
+      },
+      "outcomes": {
+        "failure": "fireNotification",
+        "success": "resetVariablesOrderPayload"
+      }
+    },
+    "resetVariablesOrderPayload": {
+      "module": "vb/action/builtin/resetVariablesAction",
+      "parameters": {
+        "variables": [
+          "$page.variables.orderPayload"
+        ]
+      },
+      "outcomes": {
+        "success": "fireNotification3"
+      }
+    },
+    "fireNotification3": {
+      "module": "vb/action/builtin/fireNotificationEventAction",
+      "parameters": {
+        "target": "current",
+        "summary": "Order created successfully.",
+        "displayMode": "transient",
+        "type": "confirmation"
+      }
+    }
+  }
+}

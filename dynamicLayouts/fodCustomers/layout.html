@@ -1,0 +1,17 @@
+<!-- Contains Dynamic UI layout templates -->
+<template id="addressTemplate">
+    <oj-label>
+        <oj-bind-text value="[[ $metadata.labelHint ]]"></oj-bind-text>
+    </oj-label>
+    <div class="oj-flex">
+        <div class="oj-flex-item">
+            <oj-bind-text value="[[  $value() ? $value().AddressLine1 + ' ' + $value().AddressLine2 : '' ]]">
+            </oj-bind-text>
+        </div>
+        <div class="oj-flex-item">
+            <oj-bind-text
+                value="[[  $value() ? $value().City + ' ' + $value().State + ' ' + $value().PostalCode : '' ]]">
+            </oj-bind-text>
+        </div>
+    </div>
+</template>

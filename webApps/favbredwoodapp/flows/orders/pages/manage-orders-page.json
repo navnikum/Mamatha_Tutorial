@@ -1,0 +1,250 @@
+{
+  "title": "",
+  "description": "",
+  "variables": {
+    "allFilters": {
+      "type": "filterChip[]",
+      "defaultValue": "{{$page.variables.selectContextValue ? (($page.variables.appliedFilters || []).concat([ { 'label': $page.variables.selectContextValue, 'filter': 'keyword', 'value': $page.variables.selectContextValue } ])) :  $page.variables.appliedFilters }}"
+    },
+    "appliedFilters": {
+      "type": "filterChip[]",
+      "defaultValue": "{{ $page.variables.appliedFiltersStr && $page.variables.appliedFiltersStr.length > 0 ? JSON.parse($page.variables.appliedFiltersStr) : [] }}",
+      "onValueChanged": {
+        "chains": [
+          {
+            "chainId": "updateAllFilters"
+          }
+        ]
+      }
+    },
+    "appliedFiltersStr": {
+      "type": "string",
+      "input": "fromUrl",
+      "defaultValue": "",
+      "onValueChanged": {
+        "chains": [
+          {
+            "chainId": "updateAppliedFilters",
+            "parameters": {}
+          }
+        ]
+      }
+    },
+    "askHint": {
+      "type": "string",
+      "defaultValue": " [[ $application.translations.app.ASK_HINT ]]"
+    },
+    "currentOrderId": {
+      "type": "string"
+    },
+    "currentOrderNumber": {
+      "type": "string"
+    },
+    "displayMode": {
+      "type": "string"
+    },
+    "expanded": {
+      "type": "string",
+      "defaultValue": "auto"
+    },
+    "functionalPrimaryActions": {
+      "type": "action[]"
+    },
+    "functionalSecondaryActions": {
+      "type": "action[]"
+    },
+    "goToParentOption": {
+      "type": "boolean",
+      "defaultValue": true
+    },
+    "initialString": {
+      "type": "string"
+    },
+    "pageTitle": {
+      "type": "string",
+      "defaultValue": "[[ $application.translations.app.SEARCH_PAGE_TITLE ]]"
+    },
+    "primaryAction": {
+      "type": "action"
+    },
+    "searchResultsDP": {
+      "type": "oj-sp/data-provider/SmartSearchAndFilterDataProvider",
+      "defaultValue": {
+        "endpoint": "faFodOrder/advancedsearchall_fa-fod-order",
+        "options": {
+          "filterCriterion": "{{$page.variables.allFilters}}",
+          "parameters": {
+            "smartSearchName": "fodOrderSearch",
+            "searchType": "SEARCH"
+          },
+          "recentSearches": {
+            "endpoint": "fodRecentSearches/save"
+          }
+        }
+      }
+    },
+    "searchSuggestionsDP": {
+      "type": "oj-sp/data-provider/SmartSuggestionChipsDataProvider",
+      "defaultValue": {
+        "dataProviders": {
+          "recentSearches": {
+            "endpoint": "fodRecentSearches/getall",
+            "uriParameters": {
+              "smartSearchName": "fodOrderSearch",
+              "limit": 5
+            }
+          },
+          "autocompleteSearch": {
+            "endpoint": "faFodOrder/advancedsearchall_fa-fod-order",
+            "uriParameters": {
+              "smartSearchName": "fodOrderSearch",
+              "searchType": "AUTOCOMPLETE"
+            }
+          }
+        }
+      }
+    },
+    "secondaryActions": {
+      "type": "action[]"
+    },
+    "selectContextData": {
+      "type": "vb/ArrayDataProvider"
+    },
+    "selectContextItemText": {
+      "type": "string",
+      "defaultValue": "label"
+    },
+    "selectContextLabelHint": {
+      "type": "string"
+    },
+    "selectContextValue": {
+      "type": "string",
+      "defaultValue": null,
+      "persisted": "device",
+      "input": "fromUrl",
+      "onValueChanged": {
+        "chains": [
+          {
+            "chainId": "updateAllFilters"
+          }
+        ]
+      }
+    },
+    "showAllTotalCount": {
+      "type": "boolean",
+      "defaultValue": false
+    },
+    "suggestionFiltersDP": {
+      "type": "oj-sp/data-provider/SuggestionFiltersDataProvider",
+      "defaultValue": {
+        "//": "specify endpoint for suggest search below",
+        "endpoint": null,
+        "uriParameters": {
+          "smartSearchName": "<The name of the Smart Search as registered by the product team>"
+        }
+      }
+    }
+
+  },
+  "metadata": {},
+  "types": {
+    "action": {
+      "id": "string",
+      "label": "string",
+      "display": "string",
+      "icon": "string"
+    },
+    "contextSelectType": {
+      "value": "string",
+      "label": "string"
+    },
+    "filterChip": {
+      "count": "number",
+      "dependencies": "string[]",
+      "filter": "string",
+      "filterLabel": "string",
+      "label": "string",
+      "value": "any"
+    }
+  },
+  "chains": {},
+  "eventListeners": {
+    "confirmNoOjAction": {
+      "chains": [
+        {
+          "chainId": "noButtonActionChain"
+        }
+      ]
+    },
+    "ojButtonOjAction": {
+      "chains": [
+        {
+          "chainId": "yesButtonActionChain"
+        }
+      ]
+    },
+    "ojSpGoToParent": {
+      "chains": [
+        {
+          "chainId": "goToParent",
+          "parameters": {}
+        }
+      ]
+    },
+    "ojSpListItemTemplateSpSecondaryAction": {
+      "chains": [
+        {
+          "chainId": "ListItemTemplateSpSecondaryActionChain",
+          "parameters": {
+            "actionId": "{{$event.detail.actionId}}",
+            "key": "{{ $current.key }}",
+            "index": "{{ $current.index }}",
+            "current": "{{ $current }}"
+          }
+        }
+      ]
+    },
+    "ojSpNavigateBack": {
+      "chains": [
+        {
+          "chainId": "navigateBack",
+          "parameters": {}
+        }
+      ]
+    },
+    "ojSsfs1SpPrimaryAction": {
+      "chains": [
+        {
+          "chainId": "manageOrdersSpPrimaryActionChain"
+        }
+      ]
+    }
+
+  },
+  "imports": {
+    "components": {
+      "oj-button": {
+        "path": "ojs/ojbutton"
+      },
+      "oj-dialog": {
+        "path": "ojs/ojdialog"
+      },
+      "oj-list-view": {
+        "path": "ojs/ojlistview"
+      },
+      "oj-sp-collection-container": {
+        "path": "oj-sp/collection-container/loader"
+      },
+      "oj-sp-empty-state": {
+        "path": "oj-sp/empty-state/loader"
+      },
+      "oj-sp-list-item-template": {
+        "path": "oj-sp/list-item-template/loader"
+      },
+      "oj-sp-smart-filter-search": {
+        "path": "oj-sp/smart-filter-search/loader"
+      }
+
+    }
+  }
+}

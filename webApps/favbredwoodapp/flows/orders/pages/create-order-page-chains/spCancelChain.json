@@ -1,0 +1,16 @@
+{
+  "description": "",
+  "variables": {
+    "detail": {
+      "required": true,
+      "type": "any",
+      "input": "fromCaller"
+    }
+  },
+  "root": "navigateBack1",
+  "actions": {
+    "navigateBack1": {
+      "module": "vb/action/builtin/navigateBackAction"
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+    "vbcs.dt.version": "20210312-21.07.88-SNAPSHOT:20210405-bufp_4890",
+    "source.version": "2110",
+    "dependencies": {
+        "upgrade": "micro",
+        "paths": {
+            "jet": "https://static.oracle.com/cdn/jet/10.1.1",
+            "telemetry": "https://static-stage.oracle.com/cdn/trace/3.0.0-rc.1",
+            "visualRuntime": "https://static.oracle.com/cdn/vb/2110.0.0-rc.2"
+        }
+    },
+    "rootURL": "Mamatha_Tutorial",
+    "version": "0.1"
+}

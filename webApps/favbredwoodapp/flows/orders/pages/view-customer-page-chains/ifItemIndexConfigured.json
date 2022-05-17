@@ -1,0 +1,25 @@
+{
+  "root": "ifItemIndexValid",
+  "description": "Check to see if item index is provided",
+  "actions": {
+    "ifItemIndexValid": {
+      "module": "vb/action/builtin/ifAction",
+      "parameters": {
+        "condition": "[[ $page.variables.itemIndex >= 0 ]]"
+      },
+      "outcomes": {
+        "true": "callFetchChain"
+      }
+    },
+    "callFetchChain": {
+      "module": "vb/action/builtin/callChainAction",
+      "parameters": {
+        "id": "fetchItemChain",
+        "params": {
+          "limit": "{{ $page.variables.itemIndex ? 3 : 2 }}",
+          "offset": "{{ $page.variables.itemIndex ? ($page.variables.itemIndex - 1) : 0 }}"
+        }
+      }
+    }
+  }
+}

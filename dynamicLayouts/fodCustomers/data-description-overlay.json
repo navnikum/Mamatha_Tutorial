@@ -1,0 +1,22 @@
+{
+  "addField": {
+    "billingAddress": {
+      "type": "object",
+      "labelHint": "Billing Address",
+      "readonly": true,
+      "value": "[[ $fields.CustomerBillingAddress.value()[0] ]]",
+      "referencedFields": [
+        "CustomerBillingAddress"
+      ]
+    },
+    "shippingAddress": {
+      "type": "object",
+      "labelHint": "Shipping Address",
+      "readonly": true,
+      "value": "[[ $fields.CustomerShippingAddressVO.value()[0] ]]",
+      "referencedFields": [
+        "CustomerShippingAddressVO"
+      ]
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "SEARCH_PAGE_TITLE": "Manage Orders",
+  "@SEARCH_PAGE_TITLE": {
+    "description": ""
+  },
+  "CREATE_ORDER_BUTTON": "Create Order",
+  "@CREATE_ORDER_BUTTON": {
+    "description": ""
+  },
+  "ASK_HINT": "Search Customers and Orders",
+  "@ASK_HINT": {
+    "description": ""
+  },
+  "spSceUnsavedDataMessage": "You have unsaved changes that will be lost, do you want to continue?",
+  "@spSceUnsavedDataMessage": {
+    "description": ""
+  },
+  "spSceWarningTitle": "Warning",
+  "@spSceWarningTitle": {
+    "description": ""
+  },
+  "spSceWarningNo": "No",
+  "@spSceWarningNo": {
+    "description": ""
+  },
+  "spSceWarningYes": "Yes",
+  "@spSceWarningYes": {
+    "description": ""
+  }
+}

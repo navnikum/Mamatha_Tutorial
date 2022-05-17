@@ -1,0 +1,24 @@
+{
+  "root": "assignVariablesDirtyDataFlag",
+  "description": "",
+  "variables": {
+    "event": {
+      "required": false,
+      "input": "fromCaller",
+      "type": {
+        "oldValue": "create_fodOrders",
+        "value": "create_fodOrders"
+      }
+    }
+  },
+  "actions": {
+    "assignVariablesDirtyDataFlag": {
+      "module": "vb/action/builtin/assignVariablesAction",
+      "parameters": {
+        "$page.variables.dirtyDataFlag": {
+          "source": true
+        }
+      }
+    }
+  }
+}

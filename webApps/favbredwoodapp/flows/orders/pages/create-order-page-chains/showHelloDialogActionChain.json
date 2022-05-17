@@ -1,0 +1,24 @@
+{
+  "description": "",
+  "root": "if",
+  "actions": {
+    "callHelloDialogOpenMethod": {
+      "module": "vb/action/builtin/callComponentMethodAction",
+      "parameters": {
+        "component": "{{ document.getElementById('hello-dialog') }}",
+        "method": "open"
+      },
+      "outcomes": {}
+    },
+    "if": {
+      "module": "vb/action/builtin/ifAction",
+      "parameters": {
+        "condition": "[[ $application.functions.isFormValid(\"helloForm\") ]]"
+      },
+      "outcomes": {
+        "true": "callHelloDialogOpenMethod"
+      }
+    }
+  },
+  "variables": {}
+}

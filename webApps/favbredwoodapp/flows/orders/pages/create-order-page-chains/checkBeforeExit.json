@@ -1,0 +1,65 @@
+{
+  "root": "checkDirtyDataFlag",
+  "description": "",
+  "actions": {
+    "checkDirtyDataFlag": {
+      "module": "vb/action/builtin/ifAction",
+      "parameters": {
+        "condition": "{{ $page.variables.dirtyDataFlag }}"
+      },
+      "outcomes": {
+        "true": "callOpenDialog"
+      }
+    },
+    "callOpenDialog": {
+      "module": "vb/action/builtin/callModuleFunctionAction",
+      "parameters": {
+        "module": "{{$page.functions}}",
+        "functionName": "checkWithUser",
+        "returnType": "string"
+      },
+      "outcomes": {
+        "success": "checkDialogResponse"
+      }
+    },
+    "checkDialogResponse": {
+      "module": "vb/action/builtin/ifAction",
+      "parameters": {
+        "condition": "{{ $chain.results.callOpenDialog  === 'YES'}}"
+      },
+      "outcomes": {
+        "false": "stopNavigation",
+        "true": "continueNavigation"
+      }
+    },
+    "stopNavigation": {
+      "module": "vb/action/builtin/navigateToPageAction",
+      "parameters": {
+        "page": "[[ $application.currentPage.id ]]",
+        "params": {
+          "objectId": "{{ $page.variables.objectId }}",
+          "formType": "edit",
+          "dirtyDataFlag": "{{ $page.variables.dirtyDataFlag }}"
+        },
+        "history": "push"
+      },
+      "outcomes": {
+        "success": "staySamePage"
+      }
+    },
+    "staySamePage": {
+      "module": "vb/action/builtin/returnAction",
+      "parameters": {
+        "outcome": "success",
+        "payload": "{{ {\"cancelled\":true} }}"
+      }
+    },
+    "continueNavigation": {
+      "module": "vb/action/builtin/returnAction",
+      "parameters": {
+        "outcome": "success"
+      }
+    }
+  },
+  "variables": {}
+}

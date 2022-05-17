@@ -1,0 +1,75 @@
+{
+  "description": "Submit form data",
+  "variables": {
+    "type": {
+      "required": true,
+      "type": "string",
+      "input": "fromCaller"
+    }
+  },
+  "root": "isFormValid",
+  "actions": {
+    "isFormValid": {
+      "module": "vb/action/builtin/ifAction",
+      "parameters": {
+        "condition": "[[ $page.variables.formState === 'valid' ]]"
+      },
+      "outcomes": {
+        "true": "saveOrderDataChain",
+        "false": "showValidationMessages"
+      }
+    },
+    "showValidationMessages": {
+      "module": "vb/action/builtin/callComponentMethodAction",
+      "parameters": {
+        "component": "fod-order-validation-group",
+        "method": "showMessages"
+      }
+    },
+    "resetDirtyDataFlag": {
+      "module": "vb/action/builtin/resetVariablesAction",
+      "parameters": {
+        "variables": [
+          "$page.variables.dirtyDataFlag"
+        ]
+      },
+      "outcomes": {
+        "success": "isPrimaryAction"
+      }
+    },
+    "isPrimaryAction": {
+      "module": "vb/action/builtin/ifAction",
+      "parameters": {
+        "condition": "[[ $chain.variables.type === 'spPrimaryAction' ]]"
+      },
+      "outcomes": {
+        "true": "navigateBack",
+        "false": "setVariableIsSaved"
+      }
+    },
+    "navigateBack": {
+      "module": "vb/action/builtin/navigateBackAction"
+    },
+    "setVariableIsSaved": {
+      "module": "vb/action/builtin/assignVariablesAction",
+      "parameters": {
+        "$page.variables.isSaved": {
+          "source": true,
+          "auto": "always"
+        }
+      }
+    },
+    "saveOrderDataChain": {
+      "module": "vb/action/builtin/callChainAction",
+      "parameters": {
+        "id": "saveOrderDataChain",
+        "params": {
+          "orderStatus": "{{ $variables.type === 'spPrimaryAction' ? 'PROCESSING' : 'DRAFT' }}"
+        }
+      },
+      "outcomes": {
+        "success": "resetDirtyDataFlag"
+      }
+    }
+  }
+}

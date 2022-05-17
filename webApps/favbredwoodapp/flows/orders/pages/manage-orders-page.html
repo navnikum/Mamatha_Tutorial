@@ -1,0 +1,46 @@
+<div class="oj-flex">
+  <oj-sp-smart-filter-search id="oj_ssfs1" page-title="{{$page.variables.pageTitle}}"
+    display-options.go-to-parent="false" smart-filters.expanded="{{$page.variables.expanded}}"
+    smart-filters.value="{{$page.variables.appliedFilters}}" smart-filters.ask-hint="{{$page.variables.askHint}}"
+    smart-filters.results-data="[[$page.variables.searchResultsDP]]"
+    smart-filters.suggestions="[[$page.variables.searchSuggestionsDP]]"
+    smart-filters.suggestion-filters="[[$page.variables.suggestionFiltersDP]]"
+    select-context.item-text="{{$page.variables.selectContextItemText}}"
+    select-context.label-hint="{{$page.variables.selectContextLabelHint}}"
+    select-context-value="{{$page.variables.selectContextValue}}" display-mode="[[$page.variables.displayMode]]"
+    on-sp-go-to-parent="[[$listeners.ojSpGoToParent]]" show-all-total-count="[[$page.variables.showAllTotalCount]]"
+    all-total-count-message="[[$page.variables.initialString]]" class="oj-flex-item oj-sm-12 oj-md-12"
+    primary-action.label="[[ $application.translations.app.CREATE_ORDER_BUTTON ]]"
+    on-sp-primary-action="[[$listeners.ojSsfs1SpPrimaryAction]]">
+    <oj-sp-collection-container slot="main" display-options.add="off" display-options.delete="off"
+      functional-primary-actions="[[$page.variables.functionalPrimaryActions]]"
+      functional-secondary-actions="[[$variables.functionalSecondaryActions]]">
+      <oj-list-view class="oj-flex-item" data="[[$page.variables.searchResultsDP]]"
+        scroll-policy-options.scroller="[[document.documentElement]]">
+        <template slot="itemTemplate">
+        <oj-sp-list-item-template selector.row-key="[[ $current.data[0] ]]"
+          selector.aria-label="[[ 'Select Item ' + $current.index ]]"
+          columns='[[ [{"primaryText":$current.data.CustomerDetails.CustomerName,"overlineText":"Customer Name"},{"primaryText":$current.data.OrderNumber,"overlineText":"Order","secondaryText":$application.functions.formatDate($current.data.OrderDate)},{"primaryText":$application.functions.formatCurrency($current.data.CurrencyCode, $current.data.TotalAmount),"overlineText":"Total Amount"}] ]]'
+          badge.text="[[$current.data.OrderStatus]]"
+          badge.status='[[$current.data.OrderStatus === "PROCESSING" ? "info" : "default"]]' badge.position="leading"
+          secondary-actions='[{"id":"delete-order","label":"Delete Order","icon":"oj-ux-ico-trash","display":"on"},{"id":"view-customer","label":"View Customer","icon":"oj-ux-ico-view","display":"on"}]'
+          on-sp-secondary-action="[[$listeners.ojSpListItemTemplateSpSecondaryAction]]"></oj-sp-list-item-template>
+        </template>
+        <template slot="noData">
+        <oj-sp-empty-state :style.css-text="[['height: var(--oj-sp-smart-filter-search-main-content-height);']]"
+          primary-text="[[$application.translations.format('app','NO_SEARCH_RESULTS')]]"
+          primary-action.label="[[$application.translations.format('app','GO_BACK')]]" primary-action.display="on"
+          on-sp-primary-action="[[$listeners.ojSpNavigateBack]]" display-options.layout="regular"></oj-sp-empty-state>
+        </template>      
+    
+      </oj-list-view>
+    </oj-sp-collection-container>
+  </oj-sp-smart-filter-search>
+</div>
+<oj-dialog style="display:none" dialog-title="Delete Order" id="order-delete-conf-dialog">
+  <div slot="body"><oj-bind-text value="[[ $application.translations.appBundle.div__text_8c97 ]]"></oj-bind-text></div>
+  <div slot="footer">
+    <oj-button id="confirm-no" on-oj-action="[[$listeners.confirmNoOjAction]]">No</oj-button>
+    <oj-button chroming="callToAction" on-oj-action="[[$listeners.ojButtonOjAction]]">Yes</oj-button>
+  </div>
+</oj-dialog>

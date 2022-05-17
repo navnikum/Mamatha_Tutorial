@@ -1,0 +1,279 @@
+{
+
+  "title": "",
+  "description": "",
+  "variables": {
+    "avatar": {
+      "type": {
+        "initials": "string",
+        "src": "string"
+      },
+      "defaultValue": {
+        "initials": "",
+        "src": ""
+      }
+    },
+    "contextualInfoLabelVisible": {
+      "type": "boolean",
+      "defaultValue": false
+    },
+    "contextualInfoSticky": {
+      "type": "boolean",
+      "defaultValue": false
+    },
+    "dirtyDataFlag": {
+      "type": "boolean",
+      "defaultValue": false
+    },
+    "displayMode": {
+      "type": "string"
+    },
+    "fodCustomersListSDP": {
+      "type": "vb/ServiceDataProvider",
+      "defaultValue": {
+        "endpoint": "fodCustomers/getall_fodCustomers",
+        "keyAttributes": "CustomerId",
+        "itemsPath": "items",
+        "responseType": "getallFodCustomersResponse",
+        "transformsContext": {
+          "vb-textFilterAttributes": [
+            "CustomerName"
+          ]
+        }
+      }
+    },
+    "formState": {
+      "type": "string",
+      "defaultValue": ""
+    },
+    "goToParentOption": {
+      "type": "boolean",
+      "defaultValue": true
+    },
+    "isSaved": {
+      "type": "boolean",
+      "defaultValue": false
+    },
+    "name": {
+      "type": "string"
+    },
+    "objectId": {
+      "type": "string",
+      "defaultValue": ""
+    },
+    "orderPayload": {
+      "type": "create_fodOrders",
+      "onValueChanged": {
+        "chains": [
+          {
+            "chainId": "onOrderPayloadChange",
+            "parameters": {
+              "event": "{{ $event }}"
+            }
+          }
+        ]
+      },
+      "defaultValue": {
+        "ShipToAddressId": "[[ $variables.selectedCustomer.data ? $variables.selectedCustomer.data.PrimaryShippingAddressId : undefined ]]",
+        "BillToAddressId": "[[ $variables.selectedCustomer.data ? $variables.selectedCustomer.data.PrimaryBillingAddressId : undefined ]]",
+        "CustomerId": "[[ $variables.selectedCustomer.data ? $variables.selectedCustomer.data.CustomerId : undefined ]]",
+        "OrderStatus": "DRAFT",
+        "TotalAmount": 0
+      }
+    },
+    "primaryAlwaysOn": {
+      "type": "boolean",
+      "defaultValue": true
+    },
+    "saveOption": {
+      "type": "string",
+      "defaultValue": "on"
+    },
+    "selectedCustomer": {
+      "type": "object"
+    }
+
+  },
+  "metadata": {},
+  "types": {
+    "@decorators.create_fodOrders": {
+      "endpoint": "create_fodOrders",
+      "service": "fodOrders",
+      "path": "response"
+    },
+    "@decorators.getallFodCustomersResponse": {
+      "endpoint": "getall_fodCustomers",
+      "service": "fodCustomers",
+      "path": "response"
+    },
+    "create_fodOrders": {
+      "AttachmentsVO": "object[]",
+      "BillToAddressId": "number",
+      "Comments": "string",
+      "CustomerId": "number",
+      "OrderLinesVO": "object[]",
+      "OrderStatus": "string",
+      "ShipToAddressId": "number",
+      "TotalAmount": "number"
+    },
+    "getallFodCustomersResponse": {
+      "items": [
+        {
+          "CustomerId": "number",
+          "CustomerName": "string",
+          "CustomerNumber": "string",
+          "EmailAddress": "string",
+          "PrimaryBillingAddressId": "number",
+          "PrimaryShippingAddressId": "number",
+          "ShippingAddressLine1": "string",
+          "ShippingAddressLine2": "string",
+          "ShippingAddressState": "string",
+          "ShippingPostalCode": "string"
+        }
+      ]
+    }
+  },
+  "chains": {},
+  "eventListeners": {
+    "closeButtonOjAction": {
+      "chains": [
+        {
+          "chainId": "callHelloDialogCloseMethod"
+        }
+      ]
+    },
+    "confirmNoOjAction": {
+      "chains": [
+        {
+          "chainId": "dialogResponseChain",
+          "parameters": {
+            "detail": "{{ $event.detail }}",
+            "response": "NO"
+          }
+        }
+      ]
+    },
+    "confirmYesOjAction": {
+      "chains": [
+        {
+          "chainId": "dialogResponseChain",
+          "parameters": {
+            "detail": "{{ $event.detail }}",
+            "response": "YES"
+          }
+        }
+      ]
+    },
+    "dirtyDataWarningDialogOjClose": {
+      "chains": [
+        {
+          "chainId": "dialogCloseChain",
+          "parameters": {
+            "detail": "{{ $event.detail }}"
+          }
+        }
+      ]
+    },
+    "ojdynamicFormTransientValueChangeChain": {
+      "chains": [
+        {
+          "chainId": "dynamicFormTransientValueChangeChain",
+          "parameters": {
+            "detail": "{{ $event.detail}}"
+          }
+        }
+      ]
+    },
+    "ojSpCancel": {
+      "chains": [
+        {
+          "chainId": "spCancelChain",
+          "parameters": {
+            "detail": "{{ $event.detail }}"
+          }
+        }
+      ]
+    },
+    "ojSpGoToParent": {
+      "chains": [
+        {
+          "chainId": "goToParent",
+          "parameters": {}
+        }
+      ]
+    },
+    "ojSpSave": {
+      "chains": [
+        {
+          "chainId": "spSubmitChain",
+          "parameters": {
+            "type": "{{ $event.type }}"
+          }
+        }
+      ]
+    },
+    "ojSpSubmit": {
+      "chains": [
+        {
+          "chainId": "spSubmitChain",
+          "parameters": {
+            "type": "{{ $event.type }}"
+          }
+        }
+      ]
+    },
+    "showHelloButtonOjAction": {
+      "chains": [
+        {
+          "chainId": "showHelloDialogActionChain"
+        }
+      ]
+    },
+    "vbBeforeExit": {
+      "chains": [
+        {
+          "chainId": "checkBeforeExit",
+          "parameters": {}
+        }
+      ]
+    }
+  },
+  "imports": {
+    "components": {
+      "oj-button": {
+        "path": "ojs/ojbutton"
+      },
+      "oj-dialog": {
+        "path": "ojs/ojdialog"
+      },
+      "oj-dynamic-form": {
+        "path": "oj-dynamic/form/loader"
+      },
+      "oj-form-layout": {
+        "path": "ojs/ojformlayout"
+      },
+      "oj-input-text": {
+        "path": "ojs/ojinputtext"
+      },
+      "oj-select-single": {
+        "path": "ojs/ojselectsingle"
+      },
+      "oj-sp-attachments-simple": {
+        "path": "oj-sp/attachments-simple/loader"
+      },
+      "oj-sp-select-single-item-template": {
+        "path": "oj-sp/select-single-item-template/loader"
+      },
+      "oj-sp-simple-create-edit": {
+        "path": "oj-sp/simple-create-edit/loader"
+      },
+      "oj-text-area": {
+        "path": "ojs/ojinputtext"
+      },
+      "oj-validation-group": {
+        "path": "ojs/ojvalidationgroup"
+      }
+
+    }
+  }
+}

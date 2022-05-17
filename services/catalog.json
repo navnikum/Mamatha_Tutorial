@@ -1,0 +1,493 @@
+{
+  "backends": {
+    "fa": {
+      "description": "FA instance for all services",
+      "serviceType": "fa-base",
+      "servers": [
+        {
+          "url": "https://fuscdrmsmc232-fa-ext.us.oracle.com",
+          "x-vb": {
+            "authentication": {
+              "authenticated": {
+                "type": "basic",
+                "credentials": "vb_975848bf-9b41-41f1-8052-f99694c6e8c8"
+              }
+            },
+            "headers": {},
+            "forceProxy": "always"
+          },
+          "description": "Default Server"
+        },
+        {
+          "url": "{faBackendUrl}",
+          "variables": {
+            "faBackendUrl": {
+              "default": "https://faehyp77.fa.dc1.c9dev2.oraclecorp.com"
+            }
+          },
+          "x-vb": {
+            "profiles": [
+              "faProduction"
+            ],
+            "headers": {}
+          },
+          "description": "test"
+        }
+      ]
+    },
+    "fscmRestApi": {
+      "description": "Enterprise Resource Planning and Supply Chain",
+      "serviceType": "fa",
+      "serviceTypeProperties": {
+        "faCatalogAppId": "REST-fscmRestApp"
+      },
+      "transforms": {
+        "path": "vb/BusinessObjectsTransforms"
+      },
+      "headers": {},
+      "servers": [
+        {
+          "url": "vb-catalog://backends/fa/fscmRestApi/resources"
+        }
+      ]
+    },
+    "crmRestApi": {
+      "description": "Sales and Service",
+      "serviceType": "fa",
+      "serviceTypeProperties": {
+        "faCatalogAppId": "REST-crmRestApp"
+      },
+      "transforms": {
+        "path": "vb/BusinessObjectsTransforms"
+      },
+      "headers": {},
+      "servers": [
+        {
+          "url": "vb-catalog://backends/fa/crmRestApi/resources"
+        }
+      ]
+    },
+    "hcmRestApi": {
+      "description": "Human Capital Management",
+      "serviceType": "fa",
+      "serviceTypeProperties": {
+        "faCatalogAppId": "REST-hcmRestApp"
+      },
+      "transforms": {
+        "path": "vb/BusinessObjectsTransforms"
+      },
+      "headers": {},
+      "servers": [
+        {
+          "url": "vb-catalog://backends/fa/hcmRestApi/resources"
+        }
+      ]
+    },
+    "fndRestApi": {
+      "description": "Applications Core",
+      "serviceType": "fa",
+      "serviceTypeProperties": {
+        "faCatalogAppId": "REST-fndRestApp"
+      },
+      "transforms": {
+        "path": "vb/BusinessObjectsTransforms"
+      },
+      "headers": {},
+      "servers": [
+        {
+          "url": "vb-catalog://backends/fa/fscmRestApi/applcoreApi"
+        }
+      ]
+    }
+  },
+  "services": {
+    "atkPopupItems": {
+      "openapi": "3.0.0",
+      "info": {
+        "title": ""
+      },
+      "servers": [
+        {
+          "url": "vb-catalog://backends/fscmRestApi/11.13.18.05"
+        }
+      ],
+      "paths": {
+        "/describe": {
+          "get": {
+            "responses": {},
+            "x-vb": {
+              "headers": {
+                "Accept": "application/vnd.oracle.openapi3+json"
+              },
+              "queryParameters": {
+                "metadataMode": "minimal",
+                "resources": "atkPopupItems"
+              }
+            }
+          }
+        }
+      }
+    },
+    "profileValues": {
+      "openapi": "3.0.0",
+      "info": {
+        "title": ""
+      },
+      "servers": [
+        {
+          "url": "vb-catalog://backends/fscmRestApi/11.13.18.05"
+        }
+      ],
+      "paths": {
+        "/describe": {
+          "get": {
+            "responses": {},
+            "x-vb": {
+              "headers": {
+                "Accept": "application/vnd.oracle.openapi3+json"
+              },
+              "queryParameters": {
+                "metadataMode": "minimal",
+                "resources": "profileValues"
+              }
+            }
+          }
+        }
+      }
+    },
+    "userinfo-service": {
+      "openapi": "3.0.0",
+      "info": {
+        "title": ""
+      },
+      "servers": [
+        {
+          "url": "vb-catalog://backends/fndRestApi/v1/fndvbcsuishell"
+        }
+      ],
+      "paths": {
+        "/describe": {
+          "get": {
+            "responses": {
+              "default": {
+                "description": "Fetches permitted resources by type for the user",
+                "content": {
+                  "application/json": {}
+                }
+              }
+            },
+            "x-vb": {
+              "headers": {
+                "Accept": "application/vnd.oracle.adf.opneapi3+json"
+              }
+            }
+          }
+        }
+      }
+    },
+    "nav-service": {
+      "openapi": "3.0.0",
+      "info": {
+        "title": ""
+      },
+      "servers": [
+        {
+          "url": "vb-catalog://backends/fndRestApi/v1/navigatorMenuActions"
+        }
+      ],
+      "paths": {
+        "/describe": {
+          "get": {
+            "responses": {
+              "default": {
+                "description": "Fetches permitted resources by type for the user",
+                "content": {
+                  "application/json": {}
+                }
+              }
+            },
+            "x-vb": {
+              "headers": {
+                "Accept": "application/vnd.oracle.openapi3+json"
+              }
+            }
+          }
+        }
+      }
+    },
+    "faFodOrder": {
+      "openapi": "3.0.0",
+      "info": {
+        "title": ""
+      },
+      "servers": [
+        {
+          "url": "vb-catalog://backends/fndRestApi/search/v1"
+        }
+      ],
+      "paths": {
+        "/describe": {
+          "get": {
+            "responses": {},
+            "x-vb": {
+              "headers": {
+                "Accept": "application/vnd.oracle.openapi3+json",
+                "REST-Framework-Version": "5"
+              },
+              "queryParameters": {
+                "resources": "fa-fod-order"
+              }
+            }
+          }
+        }
+      }
+    },
+    "fodRecentSearches": {
+      "openapi": "3.0.0",
+      "info": {
+        "title": ""
+      },
+      "servers": [
+        {
+          "url": "vb-catalog://backends/fndRestApi/search/recentsearches/v1"
+        }
+      ],
+      "paths": {
+        "/describe": {
+          "get": {
+            "responses": {},
+            "x-vb": {
+              "headers": {
+                "Accept": "application/vnd.oracle.openapi3+json",
+                "REST-Framework-Version": "5"
+              }
+            }
+          }
+        }
+      }
+    },
+    "fodOrders": {
+      "openapi": "3.0.0",
+      "info": {
+        "title": ""
+      },
+      "servers": [
+        {
+          "url": "vb-catalog://backends/crmRestApi/11.13.18.05"
+        }
+      ],
+      "paths": {
+        "/describe": {
+          "get": {
+            "responses": {},
+            "x-vb": {
+              "headers": {
+                "Accept": "application/vnd.oracle.openapi3+json",
+                "REST-Framework-Version": "5"
+              },
+              "queryParameters": {
+                "resources": "fodOrders"
+              }
+            }
+          }
+        }
+      }
+    },
+    "fodCustomers": {
+      "openapi": "3.0.0",
+      "info": {
+        "title": ""
+      },
+      "servers": [
+        {
+          "url": "vb-catalog://backends/crmRestApi/11.13.18.05"
+        }
+      ],
+      "paths": {
+        "/describe": {
+          "get": {
+            "responses": {},
+            "x-vb": {
+              "headers": {
+                "Accept": "application/vnd.oracle.openapi3+json",
+                "REST-Framework-Version": "5"
+              },
+              "queryParameters": {
+                "resources": "fodCustomers"
+              }
+            }
+          }
+        }
+      }
+    },
+    "fodProducts": {
+      "openapi": "3.0.0",
+      "info": {
+        "title": ""
+      },
+      "servers": [
+        {
+          "url": "vb-catalog://backends/crmRestApi/11.13.18.05"
+        }
+      ],
+      "paths": {
+        "/describe": {
+          "get": {
+            "responses": {},
+            "x-vb": {
+              "headers": {
+                "Accept": "application/vnd.oracle.openapi3+json",
+                "REST-Framework-Version": "5"
+              },
+              "queryParameters": {
+                "resources": "fodProducts"
+              }
+            }
+          }
+        }
+      }
+    },
+    "impersonate-service": {
+      "openapi": "3.0.0",
+      "info": {
+        "title": ""
+      },
+      "servers": [
+        {
+          "url": "vb-catalog://backends/fndRestApi/v1/proxies/impersonateeList"
+        }
+      ],
+      "paths": {
+        "/describe": {
+          "get": {
+            "responses": {},
+            "x-vb": {
+              "headers": {
+                "Accept": "application/vnd.oracle.openapi3+json"
+              }
+            }
+          }
+        }
+      }
+    },
+    "routes-service": {
+      "openapi": "3.0.0",
+      "info": {
+        "title": ""
+      },
+      "servers": [
+        {
+          "url": "vb-catalog://backends/fndRestApi/v1/routes/namedRoutes"
+        }
+      ],
+      "paths": {
+        "/describe": {
+          "get": {
+            "responses": {},
+            "x-vb": {
+              "headers": {
+                "Accept": "application/vnd.oracle.openapi3+json"
+              }
+            }
+          }
+        }
+      }
+    },
+    "suggestions-service": {
+      "openapi": "3.0.1",
+      "info": {
+        "title": ""
+      },
+      "servers": [
+        {
+          "url": "vb-catalog://backends/fndRestApi/v1/ask/suggestions"
+        }
+      ],
+      "paths": {
+        "/describe": {
+          "get": {
+            "responses": {},
+            "x-vb": {
+              "headers": {
+                "Accept": "application/openapi+json"
+              }
+            }
+          }
+        }
+      }
+    },
+    "coreCommon": {
+      "openapi": "3.0.0",
+      "info": {
+        "title": ""
+      },
+      "servers": [
+        {
+          "url": "vb-catalog://backends/fscmRestApi/11.13.18.05"
+        }
+      ],
+      "paths": {
+        "/describe": {
+          "get": {
+            "responses": {},
+            "x-vb": {
+              "headers": {
+                "Accept": "application/vnd.oracle.openapi3+json"
+              },
+              "queryParameters": {
+                "metadataMode": "minimal",
+                "resources": "atkPopupItems,profileValues"
+              }
+            }
+          }
+        }
+      }
+    },
+    "setCodeCoach": {
+      "openapi": "3.0.0",
+      "info": {
+        "title": ""
+      },
+      "servers": [
+        {
+          "url": "vb-catalog://backends/fndRestApi/v1/fnduserpreference/setCodeCoachValue"
+        }
+      ],
+      "paths": {
+        "/describe": {
+          "get": {
+            "responses": {},
+            "x-vb": {
+              "headers": {
+                "Accept": "application/vnd.oracle.openapi3+json"
+              }
+            }
+          }
+        }
+      }
+    },
+    "fndIndexService": {
+      "openapi": "3.0.0",
+      "info": {
+        "title": ""
+      },
+      "servers": [
+        {
+          "url": "vb-catalog://backends/fa/fscmUI/redwood"
+        }
+      ],
+      "paths": {
+        "/describe": {
+          "get": {
+            "responses": {},
+            "x-vb": {
+              "headers": {
+                "Accept": "application/vnd.oracle.openapi3+json"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

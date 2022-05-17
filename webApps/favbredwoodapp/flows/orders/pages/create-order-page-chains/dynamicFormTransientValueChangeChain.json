@@ -1,0 +1,21 @@
+{
+  "description": "",
+  "variables": {
+    "detail": {
+      "required": true,
+      "type": "any",
+      "input": "fromCaller"
+    }
+  },
+  "root": "setDirtyDataFlag",
+  "actions": {
+    "setDirtyDataFlag": {
+      "module": "vb/action/builtin/assignVariablesAction",
+      "parameters": {
+        "$page.variables.dirtyDataFlag": {
+          "source": "[[ $chain.variables.detail.value === undefined || Object.keys($chain.variables.detail.value).length === 0 ? false : true ]]"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "root": "updateAllFiltersAction",
+  "actions": {
+    "updateAllFiltersAction": {
+      "module": "vb/action/builtin/assignVariablesAction",
+      "parameters": {
+        "$page.variables.allFilters": {
+          "source": "{{$page.variables.selectContextValue ? (($page.variables.appliedFilters || []).concat([ { 'filter': 'keyword', 'value': $page.variables.selectContextValue } ])) :  $page.variables.appliedFilters }}",
+          "reset": "empty"
+        }
+      },
+      "outcomes": {
+        "success": "callStringifyFiltersMethod"
+      }
+    },
+    "callStringifyFiltersMethod": {
+      "module": "vb/action/builtin/callComponentMethodAction",
+      "parameters": {
+        "component": "{{ document.getElementById('oj_ssfs1') }}",
+        "method": "stringifyFilters",
+        "params": []
+      },
+      "outcomes": {
+        "success": "navigateToSelf"
+      }
+    },
+    "navigateToSelf": {
+      "module": "vb/action/builtin/navigateToPageAction",
+      "parameters": {
+        "page": "[[ $application.currentPage.id ]]",
+        "params": {
+          "appliedFiltersStr": "{{ $chain.results.callStringifyFiltersMethod }}",
+          "selectContextValue": "{{ $page.variables.selectContextValue }}",
+          "showAllTotalCount": "{{ $page.variables.showAllTotalCount }}",
+          "initialString": "{{ $page.variables.initialString }}"
+        },
+        "history": "push"
+      }
+    }
+  }
+}

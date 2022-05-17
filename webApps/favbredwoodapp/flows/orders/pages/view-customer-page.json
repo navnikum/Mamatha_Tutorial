@@ -1,0 +1,223 @@
+{
+  "title": "",
+  "description": "",
+  "variables": {
+    "bidirectionalNavigation": {
+      "type": "boolean",
+      "defaultValue": false,
+      "input": "fromCaller"
+    },
+    "defaultFields": {
+      "type": "string[]",
+      "defaultValue": [
+        "CustomerId",
+        "FirstName",
+        "LastName"
+      ]
+    },
+    "displayMode": {
+      "type": "string"
+    },
+    "fodCustomers": {
+      "type": "page:getFodCustomersResponse"
+    },
+    "fodCustomersDetailFormLoadingStatus": {
+      "type": "string",
+      "defaultValue": "pending"
+    },
+    "fodCustomersDetailFormRenderedFields": {
+      "type": "any[]",
+      "onValueChanged": {
+        "chains": [
+          {
+            "chainId": "loadFodCustomersChain",
+            "parameters": {
+              "fetchedFields": "{{ $page.variables.defaultFields.concat($page.variables.fodCustomersDetailFormRenderedFields) }}",
+              "fodCustomersId": "{{ $variables.itemId }}"
+            }
+          }
+        ]
+      }
+    },
+    "inFlowBack": {
+      "type": "boolean",
+      "defaultValue": false,
+      "input": "fromCaller"
+    },
+    "itemId": {
+      "type": "string",
+      "required": true,
+      "input": "fromUrl",
+      "onValueChanged": {
+        "chains": [
+          {
+            "chainId": "loadFodCustomersChain",
+            "parameters": {
+              "fetchedFields": "[[ $variables.fodCustomersDetailFormRenderedFields ]]",
+              "fodCustomersId": "{{ $variables.itemId }}"
+            }
+          }
+        ]
+      }
+    },
+    "itemIndex": {
+      "type": "number",
+      "description": "Zero-based index referring to the current row in the collection",
+      "input": "fromCaller",
+      "onValueChanged": {
+        "chains": [
+          {
+            "chainId": "fetchItemChain",
+            "parameters": {
+              "limit": "{{ $page.variables.itemIndex === 0 ? 2 : 3 }}",
+              "offset": "{{ $page.variables.itemIndex > 0 ? ($page.variables.itemIndex - 1) : 0 }}"
+            }
+          }
+        ]
+      }
+    },
+    "nextItem": {
+      "type": "any",
+      "defaultValue": null
+    },
+    "orderListSDP": {
+      "type": "vb/ServiceDataProvider",
+      "defaultValue": {
+        "endpoint": "fodOrders/getall_fodOrders",
+        "responseType": "getall_fodOrders",
+        "itemsPath": "items",
+        "filterCriterion": {
+          "op": "$eq",
+          "attribute": "CustomerId",
+          "value": "{{ $variables.itemId }}"
+        }
+      }
+    },
+    "overviewExpanded": {
+      "type": "boolean",
+      "defaultValue": false,
+      "input": "fromCaller"
+    },
+    "parentPage": {
+      "type": "string",
+      "input": "fromCaller"
+    },
+    "previousItem": {
+      "type": "any",
+      "defaultValue": null
+    }
+  },
+  "metadata": {
+    "fodCustomersGetFodCustomersMetadata": {
+      "type": "vb/DynamicLayoutMetadataProviderDescriptor",
+      "defaultValue": {
+        "endpoint": "fodCustomers/get_fodCustomers"
+      }
+    }
+  },
+  "types": {
+    "@decorators.getall_fodOrders": {
+      "endpoint": "getall_fodOrders",
+      "service": "fodOrders",
+      "path": "response"
+    },
+    "@decorators.getFodCustomersResponse": {
+      "endpoint": "get_fodCustomers",
+      "service": "fodCustomers",
+      "path": "response"
+    },
+    "getall_fodOrders": {
+      "items": [
+        {
+          "CurrencyCode": "string",
+          "OrderDate": "string",
+          "OrderId": "number",
+          "OrderNumber": "string",
+          "OrderStatus": "string",
+          "TotalAmount": "number"
+        }
+      ]
+    },
+    "getFodCustomersResponse": "object"
+  },
+  "chains": {},
+  "eventListeners": {
+    "ojSpGoToParent": {
+      "chains": [
+        {
+          "chainId": "goToParentChain",
+          "parameters": {
+            "parentPage": "{{ $page.variables.parentPage }}"
+          }
+        }
+      ]
+    },
+    "ojSpItemOverviewPageSpNext": {
+      "chains": [
+        {
+          "chainId": "goToNextItemChain",
+          "parameters": {
+            "event": "{{ $event }}"
+          }
+        }
+      ]
+    },
+    "ojSpItemOverviewPageSpPrevious": {
+      "chains": [
+        {
+          "chainId": "goToPreviousItemChain",
+          "parameters": {
+            "event": "{{ $event }}"
+          }
+        }
+      ]
+    },
+    "ojSpItemOverviewSpCollapse": {
+      "chains": [
+        {
+          "chainId": "ExpandOrCollapseOverviewChain",
+          "parameters": {
+            "expand": "false"
+          }
+        }
+      ]
+    },
+    "ojSpItemOverviewSpExpand": {
+      "chains": [
+        {
+          "chainId": "ExpandOrCollapseOverviewChain",
+          "parameters": {
+            "expand": "true"
+          }
+        }
+      ]
+    },
+    "vbEnter": {
+      "chains": [
+        {
+          "chainId": "ifItemIndexConfigured",
+          "parameters": {}
+        }
+      ]
+    }
+  },
+  "imports": {
+    "components": {
+      "oj-dynamic-form": {
+        "path": "oj-dynamic/form/loader"
+      },
+      "oj-list-view": {
+        "path": "ojs/ojlistview"
+      },
+      "oj-sp-item-overview": {
+        "path": "oj-sp/item-overview/loader"
+      },
+      "oj-sp-item-overview-page": {
+        "path": "oj-sp/item-overview-page/loader"
+      },
+      "oj-sp-list-item-template": {
+        "path": "oj-sp/list-item-template/loader"
+      }
+    }
+  }
+}

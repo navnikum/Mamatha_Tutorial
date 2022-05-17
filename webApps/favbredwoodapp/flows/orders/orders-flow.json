@@ -1,0 +1,10 @@
+{
+
+  "id": "orders",
+  "description": "Flow main",
+  "defaultPage": "manage-orders",
+  "chains": {},
+  "services": {},
+  "types": {},
+  "variables": {}
+}

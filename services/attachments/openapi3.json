@@ -1,0 +1,41 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "attachments",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "https://atgcdr01.fa.dc1.c9dev2.oraclecorp.com",
+            "description": "FscmRestApi ApplcoreApi",
+            "x-vb": {
+                "authentication": {
+                    "authenticated": {
+                        "type": "basic",
+                        "credentials": "vb_6b0bd5fb-19a9-49c0-97f6-5af07a088d18"
+                    }
+                }
+            }
+        }
+    ],
+    "paths": {
+        "/attachDocTracker": {
+            "post": {
+                "operationId": "postAttachDocTracker",
+                "responses": {},
+                "x-vb": {
+                    "actionHint": "create"
+                }
+            }
+        },
+        "/attachUpload": {
+            "post": {
+                "operationId": "postAttachUpload",
+                "responses": {},
+                "x-vb": {
+                    "actionHint": "create"
+                }
+            }
+        }
+    }
+}

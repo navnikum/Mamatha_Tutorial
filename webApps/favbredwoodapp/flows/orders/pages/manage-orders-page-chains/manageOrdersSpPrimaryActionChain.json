@@ -1,0 +1,13 @@
+{
+  "description": "Navigate to the Create Order page from Manage Orders.",
+  "root": "navigateToCreateOrder",
+  "actions": {
+    "navigateToCreateOrder": {
+      "module": "vb/action/builtin/navigateAction",
+      "parameters": {
+        "page": "create-order"
+      }
+    }
+  },
+  "variables": {}
+}
